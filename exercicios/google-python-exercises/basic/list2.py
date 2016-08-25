@@ -14,8 +14,14 @@
 # so [1, 2, 2, 3] returns [1, 2, 3]. You may create a new list or
 # modify the passed in list.
 def remove_adjacent(nums):
-    # +++your code here+++
-    return
+    """
+    return list(set(nums))
+
+    https://docs.python.org/3/library/itertools.html#itertools.groupby
+    """
+    from itertools import groupby
+
+    return [k for k, _ in groupby(nums)]
 
 
 # E. Given two lists sorted in increasing order, create and return a merged
@@ -23,10 +29,32 @@ def remove_adjacent(nums):
 # Ideally, the solution should work in "linear" time, making a single
 # pass of both lists.
 def linear_merge(list1, list2):
-    # +++your code here+++
-    return
+    """
+    Inválido pois pop não é linear
+    if len(list1) == 0:
+        return list2
+    elif len(list2) == 0:
+        return list1
+    elif list1[0] < list2[0]:
+        return [list1.pop(0)] + linear_merge(list1, list2)
+    else:
+        return [list2.pop(0)] + linear_merge(list1, list2)
+    """
+    if len(list1) == 0:
+        return list2
+    elif len(list2) == 0:
+        return list1
+    else:
+        e1, e2 = list1[-1], list2[-1]
+        if e1 > e2:
+            list1.pop(-1)
 
+            l = linear_merge(list1, list2) + [e1]
+        else:
+            list2.pop(-1)
 
+            l = linear_merge(list1, list2) + [e2]
+        return l
 # Note: the solution above is kind of cute, but unforunately list.pop(0)
 # is not constant time with the standard python list implementation, so
 # the above is not strictly linear time.

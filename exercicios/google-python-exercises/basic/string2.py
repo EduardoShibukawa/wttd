@@ -16,9 +16,13 @@
 # add 'ly' instead.
 # If the string length is less than 3, leave it unchanged.
 # Return the resulting string.
+from _operator import le
+
+
 def verbing(s):
-    # +++your code here+++
-    return
+    if len(s) > 3:
+        return s + 'ly' if s[-3:] == 'ing' else s + 'ing'
+    return s
 
 
 # E. not_bad
@@ -30,8 +34,9 @@ def verbing(s):
 # So 'This dinner is not that bad!' yields:
 # This dinner is good!
 def not_bad(s):
-    # +++your code here+++
-    return
+    import re
+    p = re.compile(r'not \w+ bad')
+    return p.sub('good', s)
 
 
 # F. front_back
@@ -41,9 +46,18 @@ def not_bad(s):
 # e.g. 'abcde', the front half is 'abc', the back half 'de'.
 # Given 2 strings, a and b, return a string of the form
 #  a-front + b-front + a-back + b-back
+def rounded_front(len):
+    return len // 2 if len % 2 == 0 else len // 2 + 1
+
+
+def rounded_back(len):
+    return - (len // 2 if len % 2 == 0 else (len // 2))
+
+
 def front_back(a, b):
-    # +++your code here+++
-    return
+    af, bf = rounded_front(len(a)), rounded_front(len(b))
+    ab, bb = rounded_back(len(a)), rounded_back(len(b))
+    return a[0:af] + b[0:bf] + a[ab:] + b[bb:]
 
 
 # Simple provided test() function used in main() to print
