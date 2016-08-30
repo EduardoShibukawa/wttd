@@ -69,25 +69,25 @@ def main():
         summary = True
         del args[0]
 
-        l = []
-        for f in args:
-            if f.count('*'):
-                for file in os.listdir('.'):
-                    if fnmatch.fnmatch(file, f):
-                        if summary:
-                            new_file = open(file + '.summary', 'w')
-                            new_file.write('\n'.join(extract_names(file)))
-                        else:
-                            l += extract_names(file)
+    l = []
+    for f in args:
+        if f.count('*'):
+            for file in os.listdir('.'):
+                if fnmatch.fnmatch(file, f):
+                    if summary:
+                        new_file = open(file + '.summary', 'w')
+                        new_file.write('\n'.join(extract_names(file)))
+                    else:
+                        l += extract_names(file)
+        else:
+            if summary:
+                new_file = open(f + '.summary', 'w')
+                new_file.write('\n'.join(extract_names(f)))
             else:
-                if summary:
-                    new_file = open(f + '.summary', 'w')
-                    new_file.write('\n'.join(extract_names(f)))
-                else:
-                    l += extract_names(f)
+                l += extract_names(f)
 
-        if not summary:
-            print('\n'.join(l))
+    if not summary:
+        print('\n'.join(l))
 
 if __name__ == '__main__':
     main()
