@@ -64,8 +64,9 @@ def main():
     if not args:
         print('usage: [--summaryfile] file [file ...]')
         sys.exit(1)
-
+    summary = False
     if args[0] == '--summaryfile':
+        summary = True
         del args[0]
 
         l = []
@@ -73,11 +74,20 @@ def main():
             if f.count('*'):
                 for file in os.listdir('.'):
                     if fnmatch.fnmatch(file, f):
-                        l += extract_names(file)
+                        if summary:
+                            new_file = open(file + '.summary', 'w')
+                            new_file.write('\n'.join(extract_names(file)))
+                        else:
+                            l += extract_names(file)
             else:
-                l += extract_names(f)
-        print('\n'.join(l))
+                if summary:
+                    new_file = open(f + '.summary', 'w')
+                    new_file.write('\n'.join(extract_names(f)))
+                else:
+                    l += extract_names(f)
 
+        if not summary:
+            print('\n'.join(l))
 
 if __name__ == '__main__':
     main()
