@@ -8,6 +8,8 @@
 
 import sys
 import re
+import os
+import fnmatch
 
 """Baby Names exercise
 
@@ -42,7 +44,7 @@ def extract_names(filename):
     ['2006', 'Aaliyah 91', Aaron 57', 'Abagail 895', ' ...]
     """
     file_text = open(filename, 'r').read()
-    p = re.compile(r'Popularity in (\d*)<\/h3>|<td>(\d*)<\/td><td>(\w*)<\/td><td>(\w*)<\/td>')
+    p = re.compile(r'Popularity in (\d*)|<td>(\d*)<\/td><td>(\w*)<\/td><td>(\w*)<\/td>')
     lp = p.findall(file_text)
 
     l = [lp.pop(0)[0]]
@@ -63,15 +65,18 @@ def main():
         print('usage: [--summaryfile] file [file ...]')
         sys.exit(1)
 
-    # Notice the summary flag and remove it from args if it is present.
-    summary = False
     if args[0] == '--summaryfile':
-        summary = True
         del args[0]
 
-        # +++your code here+++
-        # For each filename, get the names, then either print the text output
-        # or write it to a summary file
+        l = []
+        for f in args:
+            if f.count('*'):
+                for file in os.listdir('.'):
+                    if fnmatch.fnmatch(file, f):
+                        l += extract_names(file)
+            else:
+                l += extract_names(f)
+        print('\n'.join(l))
 
 
 if __name__ == '__main__':
