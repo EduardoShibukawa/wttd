@@ -41,8 +41,16 @@ def extract_names(filename):
     followed by the name-rank strings in alphabetical order.
     ['2006', 'Aaliyah 91', Aaron 57', 'Abagail 895', ' ...]
     """
-    # +++your code here+++
-    return
+    file_text = open(filename, 'r').read()
+    p = re.compile(r'Popularity in (\d*)<\/h3>|<td>(\d*)<\/td><td>(\w*)<\/td><td>(\w*)<\/td>')
+    lp = p.findall(file_text)
+
+    l = [lp.pop(0)[0]]
+    for _, rank, male_name, female_name in lp:
+        l.append('{0} {1}'.format(male_name, rank))
+        l.append('{0} {1}'.format(female_name, rank))
+    l.sort()
+    return l
 
 
 def main():
